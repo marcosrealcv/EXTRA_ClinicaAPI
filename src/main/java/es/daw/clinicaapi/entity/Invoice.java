@@ -45,11 +45,17 @@ public class Invoice {
     @OneToMany(mappedBy="invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InvoiceLine> lines = new ArrayList<>();
 
+    // Métodos de conveniencia para mantener la consistencia de la relación bidireccional
+    // HELPERS
     public void addLine(InvoiceLine line) {
         lines.add(line);
         line.setInvoice(this);
     }
 
+    public void removeLine(InvoiceLine line) {
+        lines.remove(line);
+        line.setInvoice(null);
+    }
 
 
 }

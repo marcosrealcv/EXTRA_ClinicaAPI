@@ -5,20 +5,36 @@ import es.daw.clinicaapi.dto.response.invoice.InvoiceResponse;
 import es.daw.clinicaapi.entity.Invoice;
 import es.daw.clinicaapi.entity.InvoiceLine;
 
+import java.util.stream.Collectors;
+
 public final class InvoiceMapper {
 
     private InvoiceMapper() {}
 
     public static InvoiceResponse toResponse(Invoice inv) {
-
         return new InvoiceResponse(
-
+            inv.getId(),
+            inv.getAppointment().getId(),
+            inv.getStatus().toString(),
+            inv.getSubtotal(),
+            inv.getTaxTotal(),
+            inv.getTotal(),
+            inv.getIssuedAt(),
+            inv.getLines().stream()
+                .map(InvoiceMapper::toLineResponse)
+                .collect(Collectors.toList())
         );
     }
 
     public static InvoiceLineResponse toLineResponse(InvoiceLine l) {
         return new InvoiceLineResponse(
-
+            l.getID(),
+            l.getService().getId(),
+            l.getService().getName(),
+            l.getQuantity(),
+            l.getUnitPrice(),
+            l.getVatRate().toString(),
+            l.getLineTotal()
         );
     }
 }
